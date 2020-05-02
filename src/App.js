@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import MapView from "./components/MapView";
+import FloatMenu from "./components/FloatMenu";
+import TopMenu from "./components/TopMenu";
+import { Container, Row, Col } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      page_state: "MapView",
+      //dummy center
+      map_center: {
+        lat: 32.71,
+        lng: -117.16,
+      },
+    };
+  }
+  render() {
+    return (
+      <div className="App">
+        <Container fluid>
+          <Row>
+            <Col>
+              <TopMenu />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="3" sm="3" md="3" lg="3">
+              <FloatMenu />
+            </Col>
+            <Col xs="9" sm="9" md="9" lg="9">
+              {(() => {
+                switch (this.state.page_state) {
+                  case "MapView":
+                    return <MapView value={this.state.map_center} />;
+                  default:
+                    return <MapView value={this.state.map_center} />;
+                }
+              })()}
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default App;
