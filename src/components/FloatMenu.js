@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Nav, Navbar, Table } from "react-bootstrap";
 import FloatMenuLocationCard from "./FloatMenuLocationCard";
+import FloatMenuSelectedLocation from "./FloatMenuSelectedLocation";
 
 class FoatMenu extends Component {
   constructor(props) {
@@ -32,17 +33,43 @@ class FoatMenu extends Component {
           description: "fake location 4",
         },
       ],
+      menuState: "location_cards",
+      selectedId: -1,
     };
   }
-  componentDidMount() {}
+
+  componentDidUpdate() {
+    this.setState((state) => {
+      state.menuState = this.props.value.menuState;
+      state.selectedId = this.props.value.selectedId;
+      console.log(state);
+    });
+  }
+
   render() {
     return (
       <div style={{ overflowY: "scroll", height: "93vh" }}>
-        <Table bg="light" responsive>
-          {this.state.locations.map((location) => (
-            <FloatMenuLocationCard key={location.index} value={location} />
-          ))}
-        </Table>
+        {(() => {
+          switch (this.state.menuState) {
+            case "location_cards":
+              return (
+                <Table bg="light" responsive>
+                  {this.state.locations.map((location) => (
+                    <FloatMenuLocationCard
+                      key={location.index}
+                      value={location}
+                    />
+                  ))}
+                </Table>
+              );
+            case "selected_location_card":
+              return (
+                <FloatMenuSelectedLocation selectedId={this.state.selectedId} />
+              );
+            default:
+              return "menu_status fked up";
+          }
+        })()}
       </div>
     );
   }

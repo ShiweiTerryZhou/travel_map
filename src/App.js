@@ -16,8 +16,18 @@ class App extends Component {
         lat: 32.71,
         lng: -117.16,
       },
+      menu_info: { menuState: "location_cards", selectedId: -1 },
     };
+    this.changeMenuState = this.changeMenuState.bind(this);
   }
+
+  changeMenuState(new_state) {
+    this.setState((state) => {
+      state.menu_info = new_state;
+      console.log(this.state.menu_info);
+    }, this.forceUpdate());
+  }
+
   render() {
     return (
       <div className="App">
@@ -29,15 +39,20 @@ class App extends Component {
           </Row>
           <Row>
             <Col xs="3" sm="3" md="3" lg="3">
-              <FloatMenu />
+              <FloatMenu value={this.state.menu_info} />
             </Col>
             <Col xs="9" sm="9" md="9" lg="9">
               {(() => {
                 switch (this.state.page_state) {
                   case "MapView":
-                    return <MapView value={this.state.map_center} />;
+                    return (
+                      <MapView
+                        value={this.state.map_center}
+                        changeMenuState={this.changeMenuState}
+                      />
+                    );
                   default:
-                    return <MapView value={this.state.map_center} />;
+                    return "page_status fked up";
                 }
               })()}
             </Col>

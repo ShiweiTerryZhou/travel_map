@@ -30,6 +30,7 @@ class MapView extends Component {
       state.mapInfo.sorrounding = dummy_sorrounding;
     });
   }
+
   renderMarkers(map, maps) {
     let marker_list = [];
     //instantiate marker obj for the map
@@ -40,8 +41,13 @@ class MapView extends Component {
         map,
         title: point.title,
       });
+      marker.addListener("click", () => {
+        this.props.changeMenuState({
+          menuState: "selected_location_card",
+          selectedId: point.index,
+        });
+      });
       marker_list.push(marker);
-      console.log(point);
     }
     return marker_list;
   }
